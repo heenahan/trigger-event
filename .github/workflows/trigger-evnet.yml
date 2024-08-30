@@ -6,6 +6,6 @@ jobs:
   trigger-event:
     runs-on: ubuntu-latest
     steps:
-      - run: gh api /repos/outsideris/actions-test/dispatches -f event_type='event'
+      - run: gh api /repos/heenahan/github-action/dispatches -f event_type='event'
         env:
           GITHUB_TOKEN: ${{ secrets.PRIVATE_ACCESS }}

@@ -1,0 +1,11 @@
+name: trigger event
+
+on: workflow_dispatch
+
+jobs:
+  trigger-event:
+    runs-on: ubuntu-latest
+    steps:
+      - run: gh api /repos/outsideris/actions-test/dispatches -f event_type='event'
+        env:
+          GITHUB_TOKEN: ${{ secrets.PRIVATE_ACCESS }}

@@ -9,6 +9,6 @@ jobs:
       - run: |
           gh api /repos/heenahan/github-action/dispatches 
           -f event_type='event'
-          -f context_payload='{ "pull_request": '${{ toJson(github.event.pull_request) }}' }'
+          -f cilent_payload='{ "pull_request": '${{ toJson(github.event.pull_request) }}' }'
         env:
           GITHUB_TOKEN: ${{ secrets.PRIVATE_ACCESS }}

@@ -17,13 +17,13 @@ jobs:
             --argjson review_user '${{ toJson(github.event.review.user) }}' \
             --arg review_url "${{ github.event.review.html_url }}" \
             '{
-              "pull_request": {
-                "id": $id,
-                "assignees": $assignees
+              \"pull_request\": {
+                \"id\": $id,
+                \"assignees\": $assignees
               },
-              "review": {
-                "user": $review_user,
-                "html_url": $review_url
+              \"review\": {
+                \"user\": $review_user,
+                \"html_url\": $review_url
               }
             }')
           echo "payload=$payload" >> $GITHUB_OUTPUT

@@ -7,8 +7,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: |
-          gh api /repos/heenahan/github-action/dispatches 
-          -f event_type='event'
+          gh api \
+          --method POST \
+          /repos/heenahan/github-action/dispatches \
+          -f event_type='event' \
           -f client_payload='{ "pull_request": "안녕하세요" }'
         env:
-          GH_TOKEN: ${{ secrets.PRIVATE_ACCESS }}
+          GITHUB_TOKEN: ${{ secrets.PRIVATE_ACCESS }}

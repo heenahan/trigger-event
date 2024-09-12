@@ -8,6 +8,25 @@ jobs:
   trigger-event:
     runs-on: ubuntu-latest
     steps:
+      - name: create payload
+        id: create_payload
+        run: |
+          payload=$(jq -n \
+            --arg id "${{ github.event.pull_request.id }}" \
+            --argjson assignees '${{ toJson(github.event.pull_request.assignees) }}' \
+            --argjson review_user '${{ toJson(github.event.review.user) }}' \
+            --arg review_url "${{ github.event.review.html_url }}" \
+            '{
+              "pull_request": {
+                "id": $id,
+                "assignees": $assignees
+              },
+              "review": {
+                "user": $review_user,
+                "html_url": $review_url
+              }
+            }')
+          echo "payload=$payload" >> $GITHUB_OUTPUT
       - run: |
           gh api \
           --method POST \
@@ -15,9 +34,6 @@ jobs:
           -H "X-GitHub-Api-Version: 2022-11-28" \
           /repos/heenahan/github-action/dispatches \
           -f "event_type=event" \
-          -F "client_payload[pull_request][id]=${{ github.event.pull_request.id }}" \
-          -F "client_payload[pull_request][assignees]=${{ toJson(github.event.pull_request.assignees) }}" \
-          -F "client_payload[review][user]=${{ toJson(github.event.review.user) }}" \
-          -F "client_payload[review][html_url]=${{ github.event.review_html_url }}"
+          -f client_payload='${{ steps.create_payload.outputs.payload }}'
         env:
           GITHUB_TOKEN: ${{ secrets.PRIVATE_ACCESS }}

@@ -8,32 +8,10 @@ jobs:
   trigger-event:
     runs-on: ubuntu-latest
     steps:
-      - name: create payload
-        id: create_payload
-        run: |
-          payload=$(jq -n \
-            --arg id "${{ github.event.pull_request.id }}" \
-            --argjson assignees '${{ toJson(github.event.pull_request.assignees) }}' \
-            --argjson review_user '${{ toJson(github.event.review.user) }}' \
-            --arg review_url "${{ github.event.review.html_url }}" \
-            '{
-              "pull_request": {
-                "id": $id,
-                "assignees": $assignees
-              },
-              "review": {
-                "user": $review_user,
-                "html_url": $review_url
-              }
-            }')
-          echo "payload=$(echo $payload | jq -c '.')" >> $GITHUB_OUTPUT
-      - run: |
-          gh api \
-          --method POST \
-          -H "Accept: application/vnd.github+json" \
-          -H "X-GitHub-Api-Version: 2022-11-28" \
-          /repos/heenahan/github-action/dispatches \
-          -f "event_type=event" \
-          -f client_payload='${{ steps.create_payload.outputs.payload }}'
-        env:
-          GITHUB_TOKEN: ${{ secrets.PRIVATE_ACCESS }}
+      - name: Repository Dispatch
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.PRIVATE_ACCESS }}
+          repository: heenahan/github-action
+          event-type: event
+          client-payload: '{"github": ${{ toJson(github) }}'

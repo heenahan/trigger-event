@@ -14,4 +14,8 @@ jobs:
           token: ${{ secrets.PRIVATE_ACCESS }}
           repository: heenahan/github-action
           event-type: event
-          client-payload: '{"github": ${{ toJson(github) }}}'
+          client-payload: |-
+            {
+              "pull_request": ${{ toJson(github.event.pull_request) }},
+              "review": ${{ toJson(github.event.review) }}
+            }

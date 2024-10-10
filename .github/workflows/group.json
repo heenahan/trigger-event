@@ -1,0 +1,4 @@
+{
+  "frontend": [ "user1", "user2" ],
+  "backend": [ "user1", "user2" ]
+}

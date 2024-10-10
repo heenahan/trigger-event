@@ -1,0 +1,11 @@
+name: read label
+
+on: 
+  pull_request:
+    types: [opened, reopened]
+
+jobs:
+  read-label:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "PR label is ${{ github.event.label.name }}"

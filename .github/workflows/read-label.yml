@@ -8,4 +8,4 @@ jobs:
   read-label:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "PR label is ${{ toJson(github.event.pull_reqeust.labels) }}"
+      - run: echo "PR label is ${{ toJson(github.event.pull_request.labels) }}"

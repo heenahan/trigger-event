@@ -9,5 +9,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: echo "PR label is `${{ toJson(github.event.pull_request.labels) }}`"
-      - if: github.event.pull_request.labels.some(label => label.name === 'frontend')
+      - if: contains(github.event.pull_request.labels.*.name, 'frontend')
         run: echo "frontend contains"        
